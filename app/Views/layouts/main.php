@@ -18,15 +18,27 @@
             </div>
             
             <nav>
-                <a href="<?= site_url('dashboard') ?>" class="nav-link active">
+                <?php 
+                    $uri = service('uri');
+                    $current = $uri->getPath(); 
+                    $role = session()->get('role');
+                    $dashboardUrl = ($role == 'admin') ? site_url('admin/dashboard') : site_url('user/dashboard');
+                    
+                    // Logic for active state
+                    $isDashboardActive = (strpos($current, 'dashboard') !== false) || $current == 'dash';
+                    $isUsersActive = (strpos($current, 'users') !== false);
+                ?>
+
+                <a href="<?= $dashboardUrl ?>" class="nav-link <?= $isDashboardActive ? 'active' : '' ?>">
                     Dashboard
                 </a>
-                <a href="#" class="nav-link">
-                    Reportes
+                
+                <?php if($role == 'admin'): ?>
+                <a href="<?= site_url('admin/users') ?>" class="nav-link <?= $isUsersActive ? 'active' : '' ?>">
+                    Administrar Usuarios
                 </a>
-                <a href="#" class="nav-link">
-                    Configuración
-                </a>
+                <?php endif; ?>
+
                 <a href="<?= site_url('logout') ?>" class="nav-link" style="margin-top: auto;">
                     Cerrar Sesión
                 </a>

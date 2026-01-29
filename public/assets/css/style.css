@@ -381,7 +381,85 @@ a:hover {
 }
 
 .action-card:hover {
-    background-color: rgba(140, 198, 63, 0.1);
-    border-color: var(--color-primary);
     transform: translateY(-2px);
+}
+
+/* Password Toggle - Custom Flashlight */
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    display: inline-block;
+    transform: scaleX(-1);
+}
+
+.password-wrapper .form-control {
+    padding-left: 60px;
+    /* Space for the flashlight on the left */
+    padding-right: 15px;
+}
+
+.toggle-password-btn {
+    position: absolute;
+    left: 5px;
+    /* Position on the Left */
+    top: 50%;
+    transform: translateY(-50%) scaleX(-1);
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 10;
+    outline: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    /* Match approximate height logic */
+    height: 40px;
+    /* transform: scaleX(-1); Removed to avoid override */
+}
+
+/* Flashlight Body Construction */
+.flashlight-icon {
+    display: inline-block;
+    transform: rotate(180deg);
+    transform-origin: center;
+    width: 40px;
+    height: auto;
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.3));
+    transition: transform 0.2s;
+
+
+    /* Point Right -> Standard icons usually point diagonal or up. We need horizontal pointing right. */
+}
+
+/* Light Beam Effect */
+.light-beam {
+    position: absolute;
+    left: 35px;
+    /* Start at the lens of the flashlight */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    /* Hidden by default */
+    height: 100px;
+    /* Spread */
+    background: linear-gradient(90deg, rgba(253, 211, 77, 0.4) 0%, rgba(253, 211, 77, 0) 100%);
+    clip-path: polygon(0 40%, 100% 0, 100% 100%, 0 60%);
+    pointer-events: none;
+    transition: all 0.2s ease-out;
+    opacity: 0;
+    z-index: 5;
+}
+
+/* State: ON */
+.toggle-password-btn.light-on .light-beam {
+    width: 250px;
+    /* Project into the input */
+    opacity: 1;
+}
+
+.toggle-password-btn:active .flashlight-icon {
+    transform: scale(0.95) rotate(180deg);
 }

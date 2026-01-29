@@ -34,7 +34,25 @@
 
             <div class="form-group">
                 <label for="password" class="form-label">Contraseña</label>
-                <input type="password" name="password" class="form-control" id="password" required placeholder="••••••••">
+                <div class="password-wrapper">
+                    <button type="button" class="toggle-password-btn" onclick="togglePassword('password', this)">
+                        <div class="light-beam"></div>
+                        <!-- Custom Flashlight SVG (Pointing Right) -->
+                        <svg class="flashlight-icon" viewBox="0 0 60 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Body -->
+                            <rect x="15" y="12" width="35" height="16" rx="2" fill="#4B5563" stroke="#374151" stroke-width="2"/>
+                            <!-- Head/Lens (Wider) -->
+                            <path d="M15 12 L5 8 L5 32 L15 28 Z" fill="#9CA3AF" stroke="#4B5563" stroke-width="2"/>
+                            <!-- Lens Glass -->
+                            <ellipse cx="5" cy="20" rx="3" ry="12" fill="#FCD34D" opacity="0.8"/>
+                            <!-- Blue Switch -->
+                            <rect x="30" y="10" width="10" height="4" rx="1" fill="#3B82F6"/>
+                            <!-- Stripes near handle -->
+                            <path d="M45 12 V28 M42 12 V28" stroke="#374151" stroke-width="1"/>
+                        </svg>
+                    </button>
+                    <input type="password" name="password" class="form-control" id="password" required placeholder="••••••••">
+                </div>
             </div>
 
             <div class="mt-4">
@@ -47,6 +65,22 @@
         &copy; <?= date('Y') ?> IT Green. Todos los derechos reservados.
     </div>
 </div>
+
+<script>
+    function togglePassword(inputId, btn) {
+        const input = document.getElementById(inputId);
+        const isPassword = input.type === 'password';
+        
+        input.type = isPassword ? 'text' : 'password';
+        
+        // Toggle Flashlight Effect
+        if (isPassword) {
+            btn.classList.add('light-on');
+        } else {
+            btn.classList.remove('light-on');
+        }
+    }
+</script>
 
 </body>
 </html>

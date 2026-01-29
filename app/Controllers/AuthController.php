@@ -33,10 +33,27 @@ class AuthController extends BaseController
         $data = $model->where('email', $email)->first();
 
         if ($data) {
-            // Verificamos la contraseña (texto plano para pruebas)
-            $pass = $data['password'];
-            // COMPARACIÓN DIRECTA (INSEGURA - SOLO PARA PRUEBAS)
-            if ($password == $pass) {
+            // Verificamos la contraseña
+            $passEncoded = $data['password'];
+            
+            $isAuthenticated = false;
+
+            // 1. Intento con password_verify (Hashing seguro)
+            if (password_verify($password, $passEncoded)) {
+                $isAuthenticated = true;
+            } 
+            // 2. Fallback: Comparación texto plano (Legacy - Solo si la primera falla)
+            elseif ($password == $passEncoded) {
+                $isAuthenticated = true;
+                // Auto-upgrade: Hashear contraseña para la próxima vez
+                // Desactivamos temporalmente timestamps para no cambiar updated_at si no queremos, o mejor dejamos que actualice.
+                $model->save([
+                   'id' => $data['id'],
+                   'password' => $password // El modelo se encarga de hashear con beforeUpdate
+                ]);
+            }
+
+            if ($isAuthenticated) {
                 
                 // Datos para la sesión
                 $ses_data = [
